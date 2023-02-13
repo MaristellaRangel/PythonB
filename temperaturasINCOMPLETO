@@ -1,0 +1,15 @@
+temperaturas = []
+
+for i in range(4):
+    temperaturas.append(int(input(f"Digite a {i + 1}ª temperatura:")))
+
+menorTemp = temperaturas[0]
+maiorTemp = temperaturas[0]
+
+for temp in temperaturas:
+    if temp < menorTemp:
+        menorTemp = temp
+    if temp > maiorTemp:
+        maiorTemp = temp
+print(f"Maior temperatura: {maiorTemp}")
+print(f"Menor temperatura: {menorTemp}")
