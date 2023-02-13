@@ -1,6 +1,6 @@
 temperaturas = []
 
-for i in range(4):
+for i in range(14):
     temperaturas.append(int(input(f"Digite a {i + 1}ª temperatura:")))
 
 menorTemp = temperaturas[0]
