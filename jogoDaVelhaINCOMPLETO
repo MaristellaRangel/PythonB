@@ -1,0 +1,46 @@
+jogo = [
+    ["a","b","c"],
+    ["d","e","f"],
+    ["g","h","i"]
+    ]
+
+linha = 0
+coluna = 0
+
+def mostrarTab():
+    for i in range(len(jogo)):
+        print(jogo[i])
+        
+def verificarFim():
+    retorno = True
+    if jogo[0][0] == jogo[1][1] and jogo[1][1] == jogo[2][2]:
+        retorno = False
+        print("cond 1")
+            
+    for l in range(3):
+        if jogo[l][0] == jogo[l][1] and jogo[l][1] == jogo[l][2]:
+            retorno = False
+            print("cond 2")
+            
+    for c in range(3):
+        if jogo[0][c] == jogo[1][c] and jogo[1][c] == jogo[2][c]:
+            retorno = False
+            print("cond 3")
+    return retorno;
+
+def jogar(j):
+    mostrarTab()
+    linha = int(input("Escolha em qual linha deseja marcar: ")) -1
+    coluna = int(input("Escolha em qual coluna deseja marcar: "))-1
+    if jogo[linha][coluna] != "x" and jogo[linha][coluna] != "o":
+        jogo[linha][coluna] = j
+    else:
+        print("Casa já ocupada")
+        jogar(j)
+
+while True:
+    jogar("x")
+    jogar("o")
+    if verificarFim() == False:
+        print("FIM")
+        break
