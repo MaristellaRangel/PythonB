@@ -14,27 +14,27 @@ def mostrarTab():
 
 
 def verificarFim():
-    for linha in jogo:
+    retorno = True
+    for l in range(3):
         for c in range(3):
-            if c == "X" or c == "O":
+            if jogo[l][c] == "X" or jogo[l][c] == "O":
                 velha = True
             else:
                 velha = False
                 break
     if velha:
         retorno = False
-        
-    retorno = True
-    if jogo[0][0] == jogo[1][1] and jogo[1][1] == jogo[2][2]:
-        retorno = False
-
-    for l in range(3):
-        if jogo[l][0] == jogo[l][1] and jogo[l][1] == jogo[l][2]:
+    else:
+        if jogo[0][0] == jogo[1][1] and jogo[1][1] == jogo[2][2]:
             retorno = False
 
-    for c in range(3):
-        if jogo[0][c] == jogo[1][c] and jogo[1][c] == jogo[2][c]:
-            retorno = False
+        for l in range(3):
+            if jogo[l][0] == jogo[l][1] and jogo[l][1] == jogo[l][2]:
+                retorno = False
+
+        for c in range(3):
+            if jogo[0][c] == jogo[1][c] and jogo[1][c] == jogo[2][c]:
+                retorno = False
 
     return retorno;
 
