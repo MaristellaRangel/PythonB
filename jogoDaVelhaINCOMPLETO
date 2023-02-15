@@ -15,16 +15,6 @@ def mostrarTab():
 
 def verificarFim():
     retorno = True
-    for l in range(3):
-        for c in range(3):
-            if jogo[l][c] == "X" or jogo[l][c] == "O":
-                velha = True
-            else:
-                velha = False
-                break
-    if velha:
-        retorno = False
-
     if jogo[0][0] == jogo[1][1] and jogo[1][1] == jogo[2][2]:
         retorno = False
 
