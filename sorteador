@@ -1,0 +1,21 @@
+import random
+vida = 50
+numAleatorio = random.randint(1, 100)
+print(numAleatorio)
+
+for tentativa in range(3):
+    numUsuario = int(input("Digite um número: "))
+    if numUsuario != numAleatorio:
+       dano = abs(numUsuario - numAleatorio)
+       vida = vida - dano
+       if vida <= 0:
+           print("Suas vidas acabaram - FIM")
+           break
+       print(f"Dano {dano}")
+       print(f"Vida: {vida}")
+    else:
+        print("Você venceu!")
+        break
+else:
+    print("Acabaram as tentativas - FIM")
+    
