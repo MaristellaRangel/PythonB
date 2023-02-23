@@ -1,21 +1,29 @@
-import random
-vida = 50
-numAleatorio = random.randint(1, 100)
-print(numAleatorio)
+from random import randint
+from threading import Timer
 
+def finalizar(mensagem="Acabou o tempo"):
+    print("FIM - " + mensagem)
+    temporizador.cancel()
+
+numAleatorio = randint(1, 100)
+vida = 50
+
+temporizador = Timer(10, finalizar)
+temporizador.start()
+
+print(numAleatorio)
 for tentativa in range(3):
     numUsuario = int(input("Digite um número: "))
     if numUsuario != numAleatorio:
-       dano = abs(numUsuario - numAleatorio)
-       vida = vida - dano
-       if vida <= 0:
-           print("Suas vidas acabaram - FIM")
-           break
-       print(f"Dano {dano}")
-       print(f"Vida: {vida}")
+        dano = abs(numUsuario - numAleatorio)
+        vida = vida - dano
+        if vida <= 0:
+            finalizar("Acabaram suas vidas!")
+            break
+        print(f"Dano: {dano}")
+        print(f"Vida: {vida}")
     else:
-        print("Você venceu!")
+        finalizar("Você venceu!")
         break
 else:
-    print("Acabaram as tentativas - FIM")
-    
+    finalizar("Acabaram as tentativas")
