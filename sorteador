@@ -9,12 +9,13 @@ def fimJogo(texto="Acabou o tempo"):
     os.kill(pid, 0)
 
 
-temporizador = Timer(10, fimJogo)
+temporizador = Timer(60, fimJogo)
 numAleatorio = randint(1, 100)
 vida = 50
-print(numAleatorio)
 temporizador.start()
 for tentativa in range(3):
+    print(f"Vida: {vida}")
+    print(f"Tentativa: {tentativa+1}/3")
     numUsuario = int(input("Digite um número: "))
     if numUsuario != numAleatorio:
         dano = abs(numUsuario - numAleatorio)
@@ -25,4 +26,3 @@ for tentativa in range(3):
         fimJogo("Você venceu")
 else:
     fimJogo("Acabaram as tentativas")
-
