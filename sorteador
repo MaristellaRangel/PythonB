@@ -1,0 +1,27 @@
+import os
+from random import randint
+from threading import Timer
+
+
+def fimJogo(texto="Acabou o tempo"):
+    print(f"FIM - {texto}")
+    pid = os.getpid()
+    os.kill(pid, 0)
+
+
+temporizador = Timer(10, fimJogo)
+numAleatorio = randint(1, 100)
+vida = 50
+print(numAleatorio)
+temporizador.start()
+for tentativa in range(3):
+    numUsuario = int(input("Digite um número: "))
+    if numUsuario != numAleatorio:
+        dano = abs(numUsuario - numAleatorio)
+        vida = vida - dano
+        if vida <= 0:
+            fimJogo("Acabaram suas vidas")
+    else:
+        fimJogo("Você venceu")
+else:
+    fimJogo("Acabaram as tentativas")
