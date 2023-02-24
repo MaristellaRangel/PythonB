@@ -2,7 +2,6 @@ from random import randint
 
 numAleatorio = randint(1, 100)
 vida = 50
-
 print(numAleatorio)
 for tentativa in range(3):
     numUsuario = int(input("Digite um número: "))
@@ -12,8 +11,6 @@ for tentativa in range(3):
         if vida <= 0:
             print("Fim - Acabaram suas vidas!")
             break
-        print(f"Dano: {dano}")
-        print(f"Vida: {vida}")
     else:
         print("FIM - Você venceu!")
         break
