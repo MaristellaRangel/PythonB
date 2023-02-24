@@ -25,3 +25,4 @@ for tentativa in range(3):
         fimJogo("Você venceu")
 else:
     fimJogo("Acabaram as tentativas")
+
