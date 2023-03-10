@@ -1,0 +1,37 @@
+# import random
+vidas = 3
+palavras = ['OVO']
+dicas_palavras = ['Doce']
+# indice_palavra_selecionada = random.randint(0)
+palavra_secreta = palavras[0]
+palavra_exibicao = []
+tamanho_palavra_secreta = len(palavra_secreta)
+# letras_erradas = []
+palavra_secreta_comparacao = palavra_secreta
+palavra_exibicao_comparacao = ""
+print(palavra_secreta)
+
+
+def exibirForcaInicial():
+    for i in range(tamanho_palavra_secreta):
+        palavra_exibicao.append("_")
+    print(*palavra_exibicao)
+
+
+exibirForcaInicial()
+for i in range(vidas):
+    letra = input("Letra: ").upper()
+    if letra in palavra_secreta:
+        qtd_letra = palavra_secreta.count(letra)
+        for cont in range(qtd_letra):
+            indice_letra = palavra_secreta.index(letra)
+            palavra_exibicao[indice_letra] = letra
+            palavra_secreta = palavra_secreta.replace(letra, "0", 1)
+    else:
+       vidas -= 1
+    print(f"Vidas: {vidas}")
+    for v in range(vidas):
+        print("❤", end=" ")
+    print("")
+    print(*palavra_exibicao)
+    
