@@ -1,37 +1,50 @@
-# import random
-vidas = 3
-palavras = ['OVO']
-dicas_palavras = ['Doce']
-# indice_palavra_selecionada = random.randint(0)
-palavra_secreta = palavras[0]
+from random import randint
+palavras = ["AMARELO", "HORRORIZADO", "COELHO", "DIAMANTE", "INTESTINO"]
+dicas_palavras = ["Cor", "Com medo", "Páscoa", "Jóia", "Parte do corpo"]
+indice_palavra_secreta = randint(0,len(palavras)-1)
+palavra_secreta = palavras[indice_palavra_secreta]
 palavra_exibicao = []
+letras_usadas = []
 tamanho_palavra_secreta = len(palavra_secreta)
-# letras_erradas = []
-palavra_secreta_comparacao = palavra_secreta
-palavra_exibicao_comparacao = ""
-print(palavra_secreta)
 
-
-def exibirForcaInicial():
-    for i in range(tamanho_palavra_secreta):
-        palavra_exibicao.append("_")
-    print(*palavra_exibicao)
-
-
-exibirForcaInicial()
-for i in range(vidas):
-    letra = input("Letra: ").upper()
-    if letra in palavra_secreta:
-        qtd_letra = palavra_secreta.count(letra)
-        for cont in range(qtd_letra):
-            indice_letra = palavra_secreta.index(letra)
-            palavra_exibicao[indice_letra] = letra
-            palavra_secreta = palavra_secreta.replace(letra, "0", 1)
-    else:
-       vidas -= 1
-    print(f"Vidas: {vidas}")
+def exibir_vidas(vidas):
     for v in range(vidas):
         print("❤", end=" ")
-    print("")
+    print(vidas)
+
+def palpitarLetra(palavra_s, vidas=6):
+    exibir_vidas(vidas)
     print(*palavra_exibicao)
+    print("Letras usadas:", *letras_usadas)
+    letra = input("Letra: ").upper()
+    if letra in palavra_s:
+        if letra not in letras_usadas:
+            letras_usadas.append(letra)
+        qtd_letra = palavra_s.count(letra)
+        for l in range(qtd_letra):
+            indice_letra = palavra_s.index(letra)
+            palavra_exibicao[indice_letra] = letra
+            palavra_s = palavra_s.replace(letra,'0',1)
+    else:
+        if letra not in letras_usadas:
+            letras_usadas.append(letra)
+            vidas = vidas - 1
+    
+    qtd_underlines = palavra_exibicao.count("_")
+    
+    if qtd_underlines == 0:
+        print(*palavra_exibicao)
+        print("Você venceu! 😀")
+    else:
+        if vidas > 0:
+            if vidas == 3:
+                print(f"dica: {dicas_palavras[indice_palavra_secreta]}")
+            palpitarLetra(palavra_s,vidas)
+        else:
+            print("Acabaram suas vidas 😕")
+
+for i in range(tamanho_palavra_secreta):
+    palavra_exibicao.append("_")
+palpitarLetra(palavra_secreta)
+
     
