@@ -6,17 +6,22 @@ palavra_secreta = palavras[indice_palavra_secreta]
 palavra_exibicao = []
 letras_usadas = []
 tamanho_palavra_secreta = len(palavra_secreta)
-
+print(palavra_secreta)
 def exibir_vidas(vidas):
     for v in range(vidas):
         print("❤", end=" ")
     print(vidas)
 
-def palpitarLetra(palavra_s, vidas=6):
-    exibir_vidas(vidas)
-    print(*palavra_exibicao)
-    print("Letras usadas:", *letras_usadas)
-    letra = input("Letra: ").upper()
+def preencherPalavraExibicao():
+    for i in range(tamanho_palavra_secreta):
+        palavra_exibicao.append("_")
+
+def validarLetra(letra):
+    if letra.isalpha() and len(letra) == 1:
+        return True
+    return False
+    
+def verificarVidas(letra, palavra_s, vidas):
     if letra in palavra_s:
         if letra not in letras_usadas:
             letras_usadas.append(letra)
@@ -29,9 +34,10 @@ def palpitarLetra(palavra_s, vidas=6):
         if letra not in letras_usadas:
             letras_usadas.append(letra)
             vidas = vidas - 1
-    
+    return vidas
+
+def verificarFimJogo(palavra_s, vidas):
     qtd_underlines = palavra_exibicao.count("_")
-    
     if qtd_underlines == 0:
         print(*palavra_exibicao)
         print("Você venceu! 😀")
@@ -43,8 +49,19 @@ def palpitarLetra(palavra_s, vidas=6):
         else:
             print("Acabaram suas vidas 😕")
 
-for i in range(tamanho_palavra_secreta):
-    palavra_exibicao.append("_")
+def palpitarLetra(palavra_s, vidas=6):
+    exibir_vidas(vidas)
+    print(*palavra_exibicao)
+    print("Letras usadas:", *letras_usadas)
+    letra = input("Letra: ").upper()
+    if validarLetra(letra):
+        vidas = verificarVidas(letra, palavra_s, vidas)
+        verificarFimJogo(palavra_s, vidas)
+    else:
+        print("Por favor, digite apenas uma letra!")
+        palpitarLetra(palavra_s,vidas)
+
+preencherPalavraExibicao()
 palpitarLetra(palavra_secreta)
 
     
