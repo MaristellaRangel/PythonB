@@ -111,17 +111,38 @@ def receberOpcaoModificarPalavras():
         opcao = int(opcao)
     else:
         print("Opção inválida")
-        receberOpcaoModoJogo()
+        receberOpcaoModificarPalavras()
     return opcao
 
 def modificarPalavras():
     opcao = receberOpcaoModificarPalavras()
     if opcao == 1:
-        adicionarPalavras()
+        while True:
+            adicionarPalavras()
+            resp = input("Deseja continuar ? [S]").upper()
+            if resp != 'S':
+                break
+    if opcao == 2:
+        while True:
+            removerPalavras()
+            resp = input("Deseja continuar ? [S]").upper()
+            if resp != 'S':
+                break
 
 def adicionarPalavras():
     palavra_adicionar = input("Palavra para adicionar: ").upper()
     palavras[1].append(palavra_adicionar)
+
+def removerPalavras():
+    qtd_palavras = len(palavras[1])
+    print(f"Quantidade de palavras: {qtd_palavras}")
+    posicao = input("Escolha uma palavra para ser removida indicando sua posição (começando de 1): ")
+    if validarOpcao(posicao, qtd_palavras):
+        posicao = int(posicao) - 1
+        palavras[1].pop(posicao)
+    else:
+        removerPalavras()
+    print(palavras[1])
 
 opcao_modo_jogo = receberOpcaoModoJogo()
 if opcao_modo_jogo == 2:
