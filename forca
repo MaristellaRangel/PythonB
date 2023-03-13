@@ -156,3 +156,6 @@ indice_palavra_secreta = tupla_palavra_secreta_e_indice[1]
 dica = dicas[opcao_modo_jogo - 1][indice_palavra_secreta]
 preencherPalavraExibicao(palavra_secreta)
 palpitarLetra(palavra_secreta, vidas)
+
+# Adicionar tempo no segundo e terceiro nível (30s nivel 2, 20s nivel 3)
+# API (nível 3)
