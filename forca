@@ -119,19 +119,23 @@ def modificarPalavras():
     if opcao == 1:
         while True:
             adicionarPalavras()
-            resp = input("Deseja continuar ? [S]").upper()
+            resp = input("Deseja continuar ? [S]: ").upper()
             if resp != 'S':
                 break
     if opcao == 2:
         while True:
             removerPalavras()
-            resp = input("Deseja continuar ? [S]").upper()
+            resp = input("Deseja continuar ? [S]: ").upper()
             if resp != 'S':
                 break
 
 def adicionarPalavras():
     palavra_adicionar = input("Palavra para adicionar: ").upper()
+    dica_adicionar = input("Dica para adicionar: ").upper()
     palavras[1].append(palavra_adicionar)
+    dicas[1].append(dica_adicionar)
+    print(palavras[1])
+    print(dicas[1])
 
 def removerPalavras():
     qtd_palavras = len(palavras[1])
@@ -140,9 +144,11 @@ def removerPalavras():
     if validarOpcao(posicao, qtd_palavras):
         posicao = int(posicao) - 1
         palavras[1].pop(posicao)
+        dicas[1].pop(posicao)
     else:
         removerPalavras()
     print(palavras[1])
+    print(dicas[1])
 
 opcao_modo_jogo = receberOpcaoModoJogo()
 if opcao_modo_jogo == 2:
