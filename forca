@@ -1,33 +1,67 @@
 from random import randint
-palavras = ["AMARELO", "HORRORIZADO", "COELHO", "DIAMANTE", "INTESTINO"]
-dicas_palavras = ["Cor", "Com medo", "Páscoa", "Jóia", "Parte do corpo"]
-indice_palavra_secreta = randint(0,len(palavras)-1)
-palavra_secreta = palavras[indice_palavra_secreta]
+
+palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO"], ["TACITURNO", "VEROSSIMILHANÇA", "POLIOMIELITE", "EXCEPCIONALMENTE"]]
+dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas"], ["Calado", "Qualidade do que é verdadeiro", "Paralisia", "De forma extraordinária"]]
 palavra_exibicao = []
 letras_usadas = []
-tamanho_palavra_secreta = len(palavra_secreta)
+
+def receberOpcao():
+    print("---------- ESCOLHA O MODO DE JOGO ----------\n1-Nutella\n2-Café com leite\n3-Raiz")
+    opcao = input(" >")
+
+    if validarOpcao(opcao):
+        opcao = int(opcao) - 1
+    else:
+        print("Opção inválida")
+        receberOpcao()
+    return opcao
+
+def validarOpcao(opcao):
+    if opcao.isdigit() and int(opcao) > 0 and int(opcao) < 4:
+        return True
+    return False
+
+def configurarPalavraSecreta(opcao):
+    limite_range = len(palavras[opcao]) - 1
+    indice_palavra_secreta = randint(0, limite_range)
+    palavra_secreta = palavras[opcao][indice_palavra_secreta]
+    return palavra_secreta, indice_palavra_secreta
+
+def configurarVidas(opcao):
+    opcao = opcao + 1
+    if opcao == 1:
+        vidas = 6
+    elif opcao == 2:
+        vidas = 5
+    else:
+        vidas = 3
+    return vidas
 
 def exibir_vidas(vidas):
     for v in range(vidas):
         print("❤", end=" ")
     print(vidas)
 
-def preencherPalavraExibicao():
-    for i in range(tamanho_palavra_secreta):
+
+def preencherPalavraExibicao(palavra_screta):
+    for i in range(len(palavra_screta)):
         palavra_exibicao.append("_")
-        
+
+
 def atualizarPalavraExibicao(palavra_s, letra):
     qtd_letra = palavra_s.count(letra)
     for l in range(qtd_letra):
         indice_letra = palavra_s.index(letra)
         palavra_exibicao[indice_letra] = letra
-        palavra_s = palavra_s.replace(letra,'0',1)
-            
+        palavra_s = palavra_s.replace(letra, '0', 1)
+
+
 def validarLetra(letra):
     if letra.isalpha() and len(letra) == 1:
         return True
     return False
-    
+
+
 def verificarVidas(letra, palavra_s, vidas):
     if letra in palavra_s:
         if letra not in letras_usadas:
@@ -39,6 +73,7 @@ def verificarVidas(letra, palavra_s, vidas):
             vidas = vidas - 1
     return vidas
 
+
 def verificarFimJogo(palavra_s, vidas):
     qtd_underlines = palavra_exibicao.count("_")
     if qtd_underlines == 0:
@@ -47,12 +82,13 @@ def verificarFimJogo(palavra_s, vidas):
     else:
         if vidas > 0:
             if vidas == 3:
-                print(f"dica: {dicas_palavras[indice_palavra_secreta]}")
-            palpitarLetra(palavra_s,vidas)
+                print(f"dica: {dica}")
+            palpitarLetra(palavra_s, vidas)
         else:
             print("Acabaram suas vidas 😕")
 
-def palpitarLetra(palavra_s, vidas=6):
+
+def palpitarLetra(palavra_s, vidas):
     exibir_vidas(vidas)
     print(*palavra_exibicao)
     print("Letras usadas:", *letras_usadas)
@@ -62,7 +98,14 @@ def palpitarLetra(palavra_s, vidas=6):
         verificarFimJogo(palavra_s, vidas)
     else:
         print("Por favor, digite apenas uma letra!")
-        palpitarLetra(palavra_s,vidas)
+        palpitarLetra(palavra_s, vidas)
 
-preencherPalavraExibicao()
-palpitarLetra(palavra_secreta)
+
+opcao = receberOpcao()
+vidas = configurarVidas(opcao)
+tupla_palavra_secreta_e_indice = configurarPalavraSecreta(opcao)
+palavra_secreta = tupla_palavra_secreta_e_indice[0]
+indice_palavra_secreta = tupla_palavra_secreta_e_indice[1]
+dica = dicas[opcao][indice_palavra_secreta]
+preencherPalavraExibicao(palavra_secreta)
+palpitarLetra(palavra_secreta, vidas)
