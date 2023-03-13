@@ -8,7 +8,7 @@ letras_usadas = []
 def receberOpcaoModoJogo():
     qtd_opcoes = 3
     print("---------- ESCOLHA O MODO DE JOGO ----------\n1-Nutella\n2-Café com leite\n3-Raiz")
-    opcao = input(" >")
+    opcao = input(" > ")
 
     if validarOpcao(opcao,qtd_opcoes):
         opcao = int(opcao)
@@ -102,10 +102,10 @@ def palpitarLetra(palavra_s, vidas):
         palpitarLetra(palavra_s, vidas)
 
 def receberOpcaoModificarPalavras():
-    qtd_opcoes = 2
+    qtd_opcoes = 3
     print("---------- MODIFICAR LISTA DE PALAVRAS ----------")
-    print("---------- ESCOLHA UMA OPCAO --------------------\n1-Adicionar\n2-Remover")
-    opcao = input(" >")
+    print("---------- ESCOLHA UMA OPCAO --------------------\n1-Adicionar\n2-Remover\n3-Continuar")
+    opcao = input(" > ")
 
     if validarOpcao(opcao, qtd_opcoes):
         opcao = int(opcao)
@@ -129,13 +129,30 @@ def modificarPalavras():
             if resp != 'S':
                 break
 
-def adicionarPalavras():
-    palavra_adicionar = input("Palavra para adicionar: ").upper()
-    dica_adicionar = input("Dica para adicionar: ").upper()
-    palavras[1].append(palavra_adicionar)
-    dicas[1].append(dica_adicionar)
+def validarPalavra(palavra):
+    if len(palavra) > 0:
+        palavra = palavra.split()[0]
+        if palavra.isalpha():
+            return True
+    return False
+
+def adicionar_dicas():
+    dica_adicionar = input("Dica para adicionar: ")
+    if validarPalavra(dica_adicionar):
+        dicas[1].append(dica_adicionar)
+    else:
+        adicionar_dicas()
     print(palavras[1])
     print(dicas[1])
+
+def adicionarPalavras():
+    palavra_adicionar = input("Palavra para adicionar: ").upper()
+    if validarPalavra(palavra_adicionar):
+        palavra_adicionar = palavra_adicionar.split()[0]
+        palavras[1].append(palavra_adicionar)
+        adicionar_dicas()
+    else:
+        adicionarPalavras()
 
 def removerPalavras():
     qtd_palavras = len(palavras[1])
@@ -147,8 +164,7 @@ def removerPalavras():
         dicas[1].pop(posicao)
     else:
         removerPalavras()
-    print(palavras[1])
-    print(dicas[1])
+
 
 opcao_modo_jogo = receberOpcaoModoJogo()
 if opcao_modo_jogo == 2:
@@ -157,7 +173,6 @@ if opcao_modo_jogo == 2:
 vidas = configurarVidas(opcao_modo_jogo)
 tupla_palavra_secreta_e_indice = configurarPalavraSecreta(opcao_modo_jogo)
 palavra_secreta = tupla_palavra_secreta_e_indice[0]
-print(palavra_secreta)
 indice_palavra_secreta = tupla_palavra_secreta_e_indice[1]
 dica = dicas[opcao_modo_jogo - 1][indice_palavra_secreta]
 preencherPalavraExibicao(palavra_secreta)
