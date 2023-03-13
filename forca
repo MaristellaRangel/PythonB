@@ -1,9 +1,20 @@
+import os
 from random import randint
+from threading import Timer
 
 palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO"], ["TACITURNO", "VEROSSIMILHANÇA", "POLIOMIELITE", "EXCEPCIONALMENTE"]]
 dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas"], ["Calado", "Qualidade do que é verdadeiro", "Paralisia", "De forma extraordinária"]]
 palavra_exibicao = []
 letras_usadas = []
+
+def acabarTempo():
+    print("Acabou o tempo! ⏰")
+    print(f"A palavra é: {palavra_secreta}")
+    pid = os.getpid()
+    os.kill(pid,0)
+
+temporizador_cafe_com_leite = Timer(30, acabarTempo)
+temporizador_raiz = Timer(20, acabarTempo)
 
 def receberOpcaoModoJogo():
     qtd_opcoes = 3
@@ -35,7 +46,7 @@ def configurarVidas(opcao):
     elif opcao == 2:
         vidas = 5
     else:
-        vidas = 3
+        vidas = 4
     return vidas
 
 def exibir_vidas(vidas):
@@ -87,6 +98,7 @@ def verificarFimJogo(palavra_s, vidas):
             palpitarLetra(palavra_s, vidas)
         else:
             print("Acabaram suas vidas 😕")
+            print(f"A palavra é: {palavra_secreta}")
 
 
 def palpitarLetra(palavra_s, vidas):
@@ -128,6 +140,7 @@ def modificarPalavras():
             resp = input("Deseja continuar ? [S]: ").upper()
             if resp != 'S':
                 break
+    temporizador_cafe_com_leite.start()
 
 def validarPalavra(palavra):
     if len(palavra) > 0:
@@ -142,8 +155,6 @@ def adicionar_dicas():
         dicas[1].append(dica_adicionar)
     else:
         adicionar_dicas()
-    print(palavras[1])
-    print(dicas[1])
 
 def adicionarPalavras():
     palavra_adicionar = input("Palavra para adicionar: ").upper()
@@ -167,8 +178,11 @@ def removerPalavras():
 
 
 opcao_modo_jogo = receberOpcaoModoJogo()
+
 if opcao_modo_jogo == 2:
     modificarPalavras()
+if opcao_modo_jogo == 3:
+    temporizador_raiz.start()
 
 vidas = configurarVidas(opcao_modo_jogo)
 tupla_palavra_secreta_e_indice = configurarPalavraSecreta(opcao_modo_jogo)
