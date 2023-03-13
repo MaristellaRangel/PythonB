@@ -6,6 +6,7 @@ palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO
 dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas"], ["Calado", "Qualidade do que é verdadeiro", "Paralisia", "De forma extraordinária"]]
 palavra_exibicao = []
 letras_usadas = []
+letras_erradas = []
 
 def acabarTempo():
     print("Acabou o tempo! ⏰")
@@ -73,16 +74,22 @@ def validarLetra(letra):
         return True
     return False
 
+def verificarLetraUtilizada(letra, palavra_s):
+    if letra not in letras_usadas:
+        letras_usadas.append(letra)
+        return True
+    return False
 
 def verificarVidas(letra, palavra_s, vidas):
     if letra in palavra_s:
-        if letra not in letras_usadas:
-            letras_usadas.append(letra)
-        atualizarPalavraExibicao(palavra_s, letra)
+        if verificarLetraUtilizada(letra,palavra_s):
+            atualizarPalavraExibicao(palavra_s, letra)
     else:
-        if letra not in letras_usadas:
-            letras_usadas.append(letra)
+        if verificarLetraUtilizada(letra,palavra_s):
             vidas = vidas - 1
+            letras_erradas.append(letra)
+        else:
+            print(f"A letra {letra} já foi utilizada! ")
     return vidas
 
 
@@ -104,7 +111,7 @@ def verificarFimJogo(palavra_s, vidas):
 def palpitarLetra(palavra_s, vidas):
     exibir_vidas(vidas)
     print(*palavra_exibicao)
-    print("Letras usadas:", *letras_usadas)
+    print("Letras erradas:", *letras_erradas)
     letra = input("Letra: ").upper()
     if validarLetra(letra):
         vidas = verificarVidas(letra, palavra_s, vidas)
