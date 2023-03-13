@@ -5,30 +5,31 @@ dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bo
 palavra_exibicao = []
 letras_usadas = []
 
-def receberOpcao():
+def receberOpcaoModoJogo():
+    qtd_opcoes = 3
     print("---------- ESCOLHA O MODO DE JOGO ----------\n1-Nutella\n2-Café com leite\n3-Raiz")
     opcao = input(" >")
 
-    if validarOpcao(opcao):
-        opcao = int(opcao) - 1
+    if validarOpcao(opcao,qtd_opcoes):
+        opcao = int(opcao)
     else:
         print("Opção inválida")
-        receberOpcao()
+        receberOpcaoModoJogo()
     return opcao
 
-def validarOpcao(opcao):
-    if opcao.isdigit() and int(opcao) > 0 and int(opcao) < 4:
+def validarOpcao(opcao, qtd_opcoes):
+    if opcao.isdigit() and int(opcao) > 0 and int(opcao) <= qtd_opcoes:
         return True
     return False
 
 def configurarPalavraSecreta(opcao):
+    opcao = opcao - 1
     limite_range = len(palavras[opcao]) - 1
     indice_palavra_secreta = randint(0, limite_range)
     palavra_secreta = palavras[opcao][indice_palavra_secreta]
     return palavra_secreta, indice_palavra_secreta
 
 def configurarVidas(opcao):
-    opcao = opcao + 1
     if opcao == 1:
         vidas = 6
     elif opcao == 2:
@@ -100,12 +101,37 @@ def palpitarLetra(palavra_s, vidas):
         print("Por favor, digite apenas uma letra!")
         palpitarLetra(palavra_s, vidas)
 
+def receberOpcaoModificarPalavras():
+    qtd_opcoes = 2
+    print("---------- MODIFICAR LISTA DE PALAVRAS ----------")
+    print("---------- ESCOLHA UMA OPCAO --------------------\n1-Adicionar\n2-Remover")
+    opcao = input(" >")
 
-opcao = receberOpcao()
-vidas = configurarVidas(opcao)
-tupla_palavra_secreta_e_indice = configurarPalavraSecreta(opcao)
+    if validarOpcao(opcao, qtd_opcoes):
+        opcao = int(opcao)
+    else:
+        print("Opção inválida")
+        receberOpcaoModoJogo()
+    return opcao
+
+def modificarPalavras():
+    opcao = receberOpcaoModificarPalavras()
+    if opcao == 1:
+        adicionarPalavras()
+
+def adicionarPalavras():
+    palavra_adicionar = input("Palavra para adicionar: ").upper()
+    palavras[1].append(palavra_adicionar)
+
+opcao_modo_jogo = receberOpcaoModoJogo()
+if opcao_modo_jogo == 2:
+    modificarPalavras()
+
+vidas = configurarVidas(opcao_modo_jogo)
+tupla_palavra_secreta_e_indice = configurarPalavraSecreta(opcao_modo_jogo)
 palavra_secreta = tupla_palavra_secreta_e_indice[0]
+print(palavra_secreta)
 indice_palavra_secreta = tupla_palavra_secreta_e_indice[1]
-dica = dicas[opcao][indice_palavra_secreta]
+dica = dicas[opcao_modo_jogo - 1][indice_palavra_secreta]
 preencherPalavraExibicao(palavra_secreta)
 palpitarLetra(palavra_secreta, vidas)
