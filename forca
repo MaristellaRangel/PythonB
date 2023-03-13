@@ -23,6 +23,7 @@ def receberOpcaoModoJogo():
     opcao = input(" > ")
 
     if validarOpcao(opcao,qtd_opcoes):
+        opcao = opcao.strip()
         opcao = int(opcao)
     else:
         print("Opção inválida")
@@ -30,6 +31,7 @@ def receberOpcaoModoJogo():
     return opcao
 
 def validarOpcao(opcao, qtd_opcoes):
+    opcao = opcao.strip()
     if opcao.isdigit() and int(opcao) > 0 and int(opcao) <= qtd_opcoes:
         return True
     return False
@@ -70,6 +72,7 @@ def atualizarPalavraExibicao(palavra_s, letra):
 
 
 def validarLetra(letra):
+    letra = letra.strip()
     if letra.isalpha() and len(letra) == 1:
         return True
     return False
@@ -114,6 +117,7 @@ def palpitarLetra(palavra_s, vidas):
     print("Letras erradas:", *letras_erradas)
     letra = input("Letra: ").upper()
     if validarLetra(letra):
+        letra = letra.strip()
         vidas = verificarVidas(letra, palavra_s, vidas)
         verificarFimJogo(palavra_s, vidas)
     else:
@@ -127,6 +131,7 @@ def receberOpcaoModificarPalavras():
     opcao = input(" > ")
 
     if validarOpcao(opcao, qtd_opcoes):
+        opcao = opcao.strip()
         opcao = int(opcao)
     else:
         print("Opção inválida")
