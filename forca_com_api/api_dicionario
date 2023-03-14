@@ -1,0 +1,15 @@
+import requests
+import json
+import xml.etree.ElementTree as et
+
+def pegarPalavraAleatoria():
+    url = requests.get("https://api.dicionario-aberto.net/random")
+    palavra_aleatoria = url.json()['word']
+    return palavra_aleatoria
+
+def pegarTextoDica(palavra):
+    url_dica = requests.get("https://api.dicionario-aberto.net/word/" + palavra)
+    xml = url_dica.json()[0]['xml']
+    elemento_raiz = et.fromstring(xml)
+    texto_dica = elemento_raiz.find('sense').findtext('def')
+    return texto_dica
