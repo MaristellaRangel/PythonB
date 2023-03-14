@@ -1,0 +1,215 @@
+import os
+from random import randint
+from threading import Timer
+import api_dicionario
+
+palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO"]]
+dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas"], ["Calado", "Qualidade do que é verdadeiro", "Paralisia", "De forma extraordinária"]]
+palavra_exibicao = []
+letras_usadas = []
+letras_erradas = []
+
+def acabarTempo():
+    print("Acabou o tempo! ⏰")
+    print(f"A palavra é: {palavra_secreta}")
+    pid = os.getpid()
+    os.kill(pid,0)
+
+temporizador_cafe_com_leite = Timer(30, acabarTempo)
+temporizador_raiz = Timer(20, acabarTempo)
+
+def receberOpcaoModoJogo():
+    qtd_opcoes = 3
+    print("---------- ESCOLHA O MODO DE JOGO ----------\n1-Nutella\n2-Café com leite\n3-Raiz")
+    opcao = input(" > ")
+
+    if validarOpcao(opcao,qtd_opcoes):
+        opcao = opcao.strip()
+        opcao = int(opcao)
+    else:
+        print("Opção inválida")
+        receberOpcaoModoJogo()
+    return opcao
+
+def validarOpcao(opcao, qtd_opcoes):
+    opcao = opcao.strip()
+    if opcao.isdigit() and int(opcao) > 0 and int(opcao) <= qtd_opcoes:
+        return True
+    return False
+
+def configurarPalavraSecreta(opcao):
+    indice_palavra_secreta = None
+    if opcao == 1 or opcao == 2:
+        opcao = opcao - 1
+        limite_range = len(palavras[opcao]) - 1
+        indice_palavra_secreta = randint(0, limite_range)
+        palavra_secreta = palavras[opcao][indice_palavra_secreta]
+    else:
+        palavra_secreta = api_dicionario.pegarPalavraAleatoria().upper()
+    return palavra_secreta, indice_palavra_secreta
+
+def configurarVidas(opcao):
+    if opcao == 1:
+        vidas = 6
+    elif opcao == 2:
+        vidas = 5
+    else:
+        vidas = 4
+    return vidas
+
+def exibir_vidas(vidas):
+    for v in range(vidas):
+        print("❤", end=" ")
+    print(vidas)
+
+
+def preencherPalavraExibicao(palavra_screta):
+    for i in range(len(palavra_screta)):
+        palavra_exibicao.append("_")
+
+
+def atualizarPalavraExibicao(palavra_s, letra):
+    qtd_letra = palavra_s.count(letra)
+    for l in range(qtd_letra):
+        indice_letra = palavra_s.index(letra)
+        palavra_exibicao[indice_letra] = letra
+        palavra_s = palavra_s.replace(letra, '0', 1)
+
+
+def validarLetra(letra):
+    letra = letra.strip()
+    if letra.isalpha() and len(letra) == 1:
+        return True
+    return False
+
+
+def verificarLetraUtilizada(letra, palavra_s):
+    if letra not in letras_usadas:
+        letras_usadas.append(letra)
+        return True
+    return False
+
+
+def verificarVidas(letra, palavra_s, vidas):
+    if letra in palavra_s:
+        if verificarLetraUtilizada(letra,palavra_s):
+            atualizarPalavraExibicao(palavra_s, letra)
+    else:
+        if verificarLetraUtilizada(letra,palavra_s):
+            vidas = vidas - 1
+            letras_erradas.append(letra)
+        else:
+            print(f"A letra {letra} já foi utilizada! ")
+    return vidas
+
+
+def verificarFimJogo(palavra_s, vidas):
+    qtd_underlines = palavra_exibicao.count("_")
+    if qtd_underlines == 0:
+        print(*palavra_exibicao)
+        print("Você venceu! 😀")
+    else:
+        if vidas > 0:
+            if vidas == 3:
+                print(f"dica: {dica}")
+            palpitarLetra(palavra_s, vidas)
+        else:
+            print("Acabaram suas vidas 😕")
+            print(f"A palavra é: {palavra_secreta}")
+
+
+def palpitarLetra(palavra_s, vidas):
+    exibir_vidas(vidas)
+    print(*palavra_exibicao)
+    print("Letras erradas:", *letras_erradas)
+    letra = input("Letra: ").upper()
+    if validarLetra(letra):
+        letra = letra.strip()
+        vidas = verificarVidas(letra, palavra_s, vidas)
+        verificarFimJogo(palavra_s, vidas)
+    else:
+        print("Por favor, digite apenas uma letra!")
+        palpitarLetra(palavra_s, vidas)
+
+def receberOpcaoModificarPalavras():
+    qtd_opcoes = 3
+    print("---------- MODIFICAR LISTA DE PALAVRAS ----------")
+    print("---------- ESCOLHA UMA OPCAO --------------------\n1-Adicionar\n2-Remover\n3-Continuar")
+    opcao = input(" > ")
+
+    if validarOpcao(opcao, qtd_opcoes):
+        opcao = opcao.strip()
+        opcao = int(opcao)
+    else:
+        print("Opção inválida")
+        receberOpcaoModificarPalavras()
+    return opcao
+
+def modificarPalavras():
+    opcao = receberOpcaoModificarPalavras()
+    if opcao == 1:
+        while True:
+            adicionarPalavras()
+            resp = input("Deseja continuar ? [S]: ").upper()
+            if resp != 'S':
+                break
+    if opcao == 2:
+        while True:
+            removerPalavras()
+            resp = input("Deseja continuar ? [S]: ").upper()
+            if resp != 'S':
+                break
+    temporizador_cafe_com_leite.start()
+
+def validarPalavra(palavra):
+    if len(palavra) > 0:
+        palavra = palavra.split()[0]
+        if palavra.isalpha():
+            return True
+    return False
+
+def adicionar_dicas():
+    dica_adicionar = input("Dica para adicionar: ")
+    if validarPalavra(dica_adicionar):
+        dicas[1].append(dica_adicionar)
+    else:
+        adicionar_dicas()
+
+def adicionarPalavras():
+    palavra_adicionar = input("Palavra para adicionar: ").upper()
+    if validarPalavra(palavra_adicionar):
+        palavra_adicionar = palavra_adicionar.split()[0]
+        palavras[1].append(palavra_adicionar)
+        adicionar_dicas()
+    else:
+        adicionarPalavras()
+
+def removerPalavras():
+    qtd_palavras = len(palavras[1])
+    print(f"Quantidade de palavras: {qtd_palavras}")
+    posicao = input("Escolha uma palavra para ser removida indicando sua posição (começando de 1): ")
+    if validarOpcao(posicao, qtd_palavras):
+        posicao = int(posicao) - 1
+        palavras[1].pop(posicao)
+        dicas[1].pop(posicao)
+    else:
+        removerPalavras()
+
+
+opcao_modo_jogo = receberOpcaoModoJogo()
+
+if opcao_modo_jogo == 2:
+    modificarPalavras()
+
+vidas = configurarVidas(opcao_modo_jogo)
+tupla_palavra_secreta_e_indice = configurarPalavraSecreta(opcao_modo_jogo)
+palavra_secreta = tupla_palavra_secreta_e_indice[0]
+indice_palavra_secreta = tupla_palavra_secreta_e_indice[1]
+if opcao_modo_jogo == 1 or opcao_modo_jogo == 2:
+    dica = dicas[opcao_modo_jogo - 1][indice_palavra_secreta]
+else:
+    dica = api_dicionario.pegarTextoDica(palavra_secreta.lower())
+    temporizador_raiz.start()
+
+preencherPalavraExibicao(palavra_secreta)
+palpitarLetra(palavra_secreta, vidas)
