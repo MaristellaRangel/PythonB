@@ -3,8 +3,8 @@ from random import randint
 from threading import Timer
 import api_dicionario
 
-palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO", "GUARDA-CHUVA"]]
-dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas", "Protege da chuva"]]
+palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA", "CHOCOLATE"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO", "GUARDA-CHUVA", "ZODÍACO", "CATALISADOR", "AZERBAIJÃO"]]
+dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno", "Cacau"], ["Ruim", "Bom em algo", "Experiência", "Glândulas", "Protege da chuva", "Signos", "Acelera reações químicas", "País da Ásia Ocidental"]]
 palavra_exibicao = []
 letras_usadas = []
 letras_erradas = []
@@ -15,8 +15,14 @@ def acabarTempo():
     pid = os.getpid()
     os.kill(pid,0)
 
-temporizador_cafe_com_leite = Timer(30, acabarTempo)
-temporizador_raiz = Timer(20, acabarTempo)
+def configurarTemporizadores():
+    temporizador_cafe_com_leite = Timer(30, acabarTempo)
+    temporizador_raiz = Timer(20, acabarTempo)
+    return temporizador_cafe_com_leite, temporizador_raiz
+
+def cancelarTemporizadores(lista_temporizadores):
+    lista_temporizadores[0].cancel()
+    lista_temporizadores[1].cancel()
 
 def receberOpcaoModoJogo():
     qtd_opcoes = 3
@@ -111,6 +117,7 @@ def verificarFimJogo(palavra_s, vidas):
     if qtd_underlines == 0:
         print(*palavra_exibicao)
         print("Você venceu! 😀")
+        cancelarTemporizadores(temporizadores)
     else:
         if vidas > 0:
             if vidas == 3:
@@ -119,6 +126,7 @@ def verificarFimJogo(palavra_s, vidas):
         else:
             print("Acabaram suas vidas 😕")
             print(f"A palavra é: {palavra_secreta}")
+            cancelarTemporizadores(temporizadores)
 
 
 def palpitarLetra(palavra_s, vidas):
@@ -162,7 +170,7 @@ def modificarPalavras():
             resp = input("Deseja continuar ? [S]: ").upper()
             if resp != 'S':
                 break
-    temporizador_cafe_com_leite.start()
+    temporizadores[0].start()
 
 def validarPalavra(palavra):
     if len(palavra) > 0:
@@ -200,6 +208,7 @@ def removerPalavras():
 
 
 opcao_modo_jogo = receberOpcaoModoJogo()
+temporizadores = configurarTemporizadores()
 
 if opcao_modo_jogo == 2:
     modificarPalavras()
@@ -212,7 +221,7 @@ if opcao_modo_jogo == 1 or opcao_modo_jogo == 2:
     dica = dicas[opcao_modo_jogo - 1][indice_palavra_secreta]
 else:
     dica = api_dicionario.pegarTextoDica(palavra_secreta.lower())
-    temporizador_raiz.start()
+    temporizadores[1].start()
 
 preencherPalavraExibicao(palavra_secreta)
 palpitarLetra(palavra_secreta, vidas)
