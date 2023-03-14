@@ -3,8 +3,8 @@ from random import randint
 from threading import Timer
 import api_dicionario
 
-palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO"]]
-dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas"], ["Calado", "Qualidade do que é verdadeiro", "Paralisia", "De forma extraordinária"]]
+palavras = [["AMARELO", "LUZ", "CELULAR", "FORMIGA"], ["INOPORTUNO", "HABILIDOSO", "EMPIRICO", "ENDOCRINO", "GUARDA-CHUVA"]]
+dicas = [["Cor", "Claridade", "Aparelho móvel", "Animal pequeno"], ["Ruim", "Bom em algo", "Experiência", "Glândulas", "Protege da chuva"]]
 palavra_exibicao = []
 letras_usadas = []
 letras_erradas = []
@@ -65,7 +65,10 @@ def exibir_vidas(vidas):
 
 def preencherPalavraExibicao(palavra_screta):
     for i in range(len(palavra_screta)):
-        palavra_exibicao.append("_")
+        if palavra_screta[i] == "-":
+            palavra_exibicao.append("-")
+        else:
+            palavra_exibicao.append("_")
 
 
 def atualizarPalavraExibicao(palavra_s, letra):
