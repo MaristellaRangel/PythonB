@@ -189,9 +189,12 @@ def adicionar_dicas():
 def adicionarPalavras():
     palavra_adicionar = input("Palavra para adicionar: ").upper()
     if validarPalavra(palavra_adicionar):
-        palavra_adicionar = palavra_adicionar.split()[0]
-        palavras[1].append(palavra_adicionar)
-        adicionar_dicas()
+        if palavra_adicionar not in palavras[1]:
+            palavra_adicionar = palavra_adicionar.split()[0]
+            palavras[1].append(palavra_adicionar)
+            adicionar_dicas()
+        else:
+            print("Palavra já adicionada")
     else:
         adicionarPalavras()
 
@@ -222,6 +225,5 @@ if opcao_modo_jogo == 1 or opcao_modo_jogo == 2:
 else:
     dica = api_dicionario.pegarTextoDica(palavra_secreta.lower())
     temporizadores[1].start()
-
 preencherPalavraExibicao(palavra_secreta)
 palpitarLetra(palavra_secreta, vidas)
